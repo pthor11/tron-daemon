@@ -1,0 +1,54 @@
+version: "2"
+
+services:
+  zookeeper-tron-mainnet:
+    image: "docker.io/bitnami/zookeeper:3-debian-10"
+    ports:
+      - "2281:2281"
+    restart: always
+    volumes:
+      - "zookeeper_data:/bitnami"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+      - ZOO_PORT_NUMBER=2281
+  kafka-tron-mainnet:
+    image: "docker.io/bitnami/kafka:2-debian-10"
+    ports:
+      - "9192:9192"
+      - "9193:9193"
+    restart: always
+    volumes:
+      - "$PWD/volumes/kafka:/bitnami"
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=CLIENT://:9192,EXTERNAL://:9193
+      - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://172.17.0.1:9192,EXTERNAL://139.99.121.150:9193
+      - KAFKA_INTER_BROKER_LISTENER_NAME=CLIENT
+    depends_on:
+      - zookeeper
+  tron-mainnet:
+    container_name: tron-mainnet
+    build: https://github.com/SunStake/docker-java-tron.git#37365969d05eff7a381ded2d828b8df4a2b4f365
+    # image: "docker.io/sunstake/java-tron"
+    environment:
+      - NETWORK=nile
+      - EVENT_PLUGIN_ENABLED=true
+      - EVENT_PLUGIN_KAFKA_SERVER=172.17.0.1:9192
+      - EVENT_PLUGIN_BLOCK_TRIGGER_ENABLED=true
+      - EVENT_PLUGIN_TRANSACTION_TRIGGER_ENABLED=true
+      - EVENT_PLUGIN_CONTRACTEVENT_TRIGGER_ENABLED=true
+    ports:
+      - "8190:8190"
+      - "8191:8191"
+    volumes:
+      - "$PWD/volumes/tron-mainnet:/data"
+    depends_on:
+      - kafka
+
+volumes:
+  zookeeper_data:
+    driver: local
+  kafka_data:
+    driver: local
