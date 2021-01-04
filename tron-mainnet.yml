@@ -2,6 +2,7 @@ version: "2"
 
 services:
   tron-mainnet-zookeeper:
+    container_name: tron-mainnet-zookeeper
     image: "docker.io/bitnami/zookeeper:3-debian-10"
     ports:
       - "2281:2281"
@@ -12,6 +13,7 @@ services:
       - ALLOW_ANONYMOUS_LOGIN=yes
       - ZOO_PORT_NUMBER=2281
   tron-mainnet-kafka:
+    container_name: tron-mainnet-kafka
     image: "docker.io/bitnami/kafka:2-debian-10"
     ports:
       - "9192:9192"

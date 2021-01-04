@@ -2,6 +2,7 @@ version: "2"
 
 services:
   tron-nile-zookeeper:
+    container_name: tron-nile-zookeeper
     image: "docker.io/bitnami/zookeeper:3-debian-10"
     ports:
       - "2181:2181"
@@ -12,6 +13,7 @@ services:
       - ALLOW_ANONYMOUS_LOGIN=yes
       - ZOO_PORT_NUMBER=2181
   tron-nile-kafka:
+    container_name: tron-nile-kafka
     image: "docker.io/bitnami/kafka:2-debian-10"
     ports:
       - "9092:9092"
