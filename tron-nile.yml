@@ -32,7 +32,7 @@ services:
       - tron-nile-zookeeper
   tron-nile-node:
     container_name: tron-nile-node
-    build: https://github.com/SunStake/docker-java-tron.git#37365969d05eff7a381ded2d828b8df4a2b4f365
+    build: https://github.com/SunStake/docker-java-tron.git
     # image: "docker.io/sunstake/java-tron"
     environment:
       - NETWORK=nile
@@ -47,9 +47,3 @@ services:
       - "$PWD/volumes/tron-nile-node:/data"
     depends_on:
       - tron-nile-kafka
-
-# volumes:
-#   tron-nile-zookeeper_data:
-#     driver: local
-#   tron-nile-kafka:
-#     driver: local
