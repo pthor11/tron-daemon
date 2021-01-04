@@ -29,7 +29,7 @@ services:
     depends_on:
       - tron-nile-zookeeper
   tron-nile-node:
-    container_name: tron-nile
+    container_name: tron-nile-node
     # build: https://github.com/SunStake/docker-java-tron.git#37365969d05eff7a381ded2d828b8df4a2b4f365
     image: "docker.io/sunstake/java-tron"
     environment:
