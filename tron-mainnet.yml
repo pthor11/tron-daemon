@@ -32,8 +32,8 @@ services:
       - tron-mainnet-zookeeper
   tron-mainnet:
     container_name: tron-mainnet-node
-    build: https://github.com/SunStake/docker-java-tron.git#37365969d05eff7a381ded2d828b8df4a2b4f365
-    # image: "docker.io/sunstake/java-tron"
+    # build: https://github.com/SunStake/docker-java-tron.git#37365969d05eff7a381ded2d828b8df4a2b4f365
+    image: "docker.io/sunstake/java-tron"
     environment:
       - NETWORK=mainnet
       - EVENT_PLUGIN_ENABLED=true
