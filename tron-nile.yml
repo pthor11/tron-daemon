@@ -32,8 +32,12 @@ services:
       - tron-nile-zookeeper
   tron-nile-node:
     container_name: tron-nile-node
-    # build: https://github.com/SunStake/docker-java-tron.git
-    image: "docker.io/sunstake/java-tron"
+    build: 
+      context: https://github.com/SunStake/docker-java-tron.git
+      args: 
+        - JAVA_TRON_VERSION=GreatVoyage-v4.1.1
+        - JAVA_TRON_GIT_TAG=GreatVoyage-v4.1.1
+      # image: "docker.io/sunstake/java-tron"
     environment:
       - NETWORK=nile
       - EVENT_PLUGIN_ENABLED=true
