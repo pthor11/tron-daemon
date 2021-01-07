@@ -30,10 +30,14 @@ services:
       - KAFKA_INTER_BROKER_LISTENER_NAME=CLIENT
     depends_on:
       - tron-mainnet-zookeeper
-  tron-mainnet:
+  tron-mainnet-node:
     container_name: tron-mainnet-node
-    # build: https://github.com/SunStake/docker-java-tron.git#37365969d05eff7a381ded2d828b8df4a2b4f365
-    image: "docker.io/sunstake/java-tron"
+    build: 
+      context: https://github.com/SunStake/docker-java-tron.git
+      args: 
+        - JAVA_TRON_VERSION=GreatVoyage-v4.1.1
+        - JAVA_TRON_GIT_TAG=GreatVoyage-v4.1.1
+      # image: "docker.io/sunstake/java-tron"
     environment:
       - NETWORK=mainnet
       - EVENT_PLUGIN_ENABLED=true
@@ -49,9 +53,3 @@ services:
       - "$PWD/volumes/tron-mainnet-node:/data"
     depends_on:
       - tron-mainnet-kafka
-
-# volumes:
-#   zookeeper_data:
-#     driver: local
-#   kafka_data:
-#     driver: local
