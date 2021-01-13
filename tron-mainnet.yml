@@ -5,28 +5,28 @@ services:
     container_name: tron-mainnet-zookeeper
     image: "docker.io/bitnami/zookeeper:3-debian-10"
     ports:
-      - "2281:2281"
+      - "2181:2181"
     restart: always
     volumes:
-      - "$PWD/volumes/tron-mainnet-zookeeper:/bitnami/zookeeper"
+      - "/root/tron-daemon/volumes/tron-mainnet-zookeeper:/bitnami/zookeeper"
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
-      - ZOO_PORT_NUMBER=2281
+      - ZOO_PORT_NUMBER=2181
   tron-mainnet-kafka:
     container_name: tron-mainnet-kafka
     image: "docker.io/bitnami/kafka:2-debian-10"
     ports:
-      - "9192:9192"
-      - "9193:9193"
+      - "9092:9092"
+      - "9093:9093"
     restart: always
     volumes:
-      - "$PWD/volumes/tron-mainnet-kafka:/bitnami/kafka"
+      - "/root/tron-daemon/volumes/tron-mainnet-kafka:/bitnami/kafka"
     environment:
       - KAFKA_CFG_ZOOKEEPER_CONNECT=tron-mainnet-zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
-      - KAFKA_CFG_LISTENERS=CLIENT://:9192,EXTERNAL://:9193
-      - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://172.17.0.1:9192,EXTERNAL://139.99.121.150:9193
+      - KAFKA_CFG_LISTENERS=CLIENT://:9092,EXTERNAL://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://172.17.0.1:9092,EXTERNAL://139.99.121.150:9093
       - KAFKA_INTER_BROKER_LISTENER_NAME=CLIENT
     depends_on:
       - tron-mainnet-zookeeper
@@ -37,19 +37,23 @@ services:
       args: 
         - JAVA_TRON_VERSION=GreatVoyage-v4.1.1
         - JAVA_TRON_GIT_TAG=GreatVoyage-v4.1.1
-      # image: "docker.io/sunstake/java-tron"
+    #image: "docker.io/sunstake/java-tron"
     environment:
       - NETWORK=mainnet
+      - VM_MAX_TIME_RATIO=20.0
+      - P2P_PORT=18888
+      - FULL_NODE_PORT=8090
+      - SOLIDITY_NODE_PORT=8091
       - EVENT_PLUGIN_ENABLED=true
-      - EVENT_PLUGIN_KAFKA_SERVER=172.17.0.1:9192
+      - EVENT_PLUGIN_KAFKA_SERVER=172.17.0.1:9092
       - EVENT_PLUGIN_BLOCK_TRIGGER_ENABLED=true
       - EVENT_PLUGIN_TRANSACTION_TRIGGER_ENABLED=true
       - EVENT_PLUGIN_CONTRACTEVENT_TRIGGER_ENABLED=true
     ports:
-      - "8190:8190"
-      - "8191:8191"
+      - "8090:8090"
+      - "8091:8091"
     restart: always
     volumes:
-      - "$PWD/volumes/tron-mainnet-node:/data"
+      - "/root/output-directory-tron-mainnet:/data"
     depends_on:
       - tron-mainnet-kafka
