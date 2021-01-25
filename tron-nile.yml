@@ -8,7 +8,7 @@ services:
       - "2182:2182"
     restart: always
     volumes:
-      - "$PWD/volumes/tron-nile-zookeeper:/bitnami/zookeeper"
+      - "/root/tron-nile-zookeeper:/bitnami/zookeeper"
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
       - ZOO_PORT_NUMBER=2182
@@ -20,7 +20,7 @@ services:
       - "9193:9193"
     restart: always
     volumes:
-      - "/root/tron-daemon/volumes/tron-nile-kafka:/bitnami/kafka"
+      - "/root/tron-nile-kafka:/bitnami/kafka"
     environment:
       - KAFKA_CFG_ZOOKEEPER_CONNECT=tron-nile-zookeeper:2182
       - ALLOW_PLAINTEXT_LISTENER=yes
@@ -54,6 +54,6 @@ services:
       - "18091:18091"
     restart: always
     volumes:
-      - "/root/tron-nile-node:/data"
+      - "/root/output-directory-tron-nile:/data"
     depends_on:
       - tron-nile-kafka
